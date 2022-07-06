@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "\\\\wsl$\\Ubuntu\\home\\vutran\\code\\docker\\tes-app\\tes-backend\\example.db",
+            "name": "example"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

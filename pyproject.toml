@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "app"
+version = "0.1"
+description = "TES-Backend"
+authors = ["Vu Tran"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+uvicorn = "^0.17.6"
+fastapi = "^0.78.0"
+pydantic = {extras = ["email"], version = "~1.8.1"}
+Jinja2 = "^3.0.1"
+SQLAlchemy = "^1.4.22"
+alembic = "^1.6.5"
+tenacity = "^8.0.1"
+httpx = "0.18.1"
+passlib = {version = "1.7.2", extras = ["bcrypt"]}
+pytest = "6.2.5"
+configparser = "^5.2.0"
+psycopg2-binary = "^2.9.3"
+python-multipart = "^0.0.5"
+python-jose = {version = "3.3.0", extras = ["cryptography"]}
+celery = "^5.2.7"
+redis = "^4.3.3"
