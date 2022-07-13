@@ -7,6 +7,7 @@ from app.schemas.flowprofile import FlowProfileCreate
 
 APP_TYPE = ['LNG Cold Recovery', 'Cooling Peak Load Shifting']
 LOAD_DATA = ['PROFILE', 'NOMIAL']
+CASE_STATUS = ['SUBMITTED', 'FINISHED']
 
 class CaseBase(BaseModel):
     case_id: Optional[int]
@@ -23,7 +24,7 @@ class CaseUpdate(CaseBase):
     status: str
 
 # Properties shared by models stored in DB
-class CaseInDBBase(CaseBase):
+class CaseInDBBase(BaseModel):
     id: int
     status: str
     submit_time: datetime

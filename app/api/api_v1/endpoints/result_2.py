@@ -6,6 +6,7 @@ from app import crud
 from app.api import deps
 from app import schemas
 from app.models.user import User
+from app.schemas.case import CASE_STATUS
 
 router = APIRouter()
 
@@ -72,6 +73,20 @@ def create_result(
             status_code=404, detail=message
         )
 
+    # Update case status:
+    case_db = crud.case.get(db=db, id=case_id)
+
+    if not case_db:
+        # the exception is raised, not returned - you will get a validation
+        # error otherwise.
+        raise HTTPException(
+            status_code=404, detail=f"Case with ID {case_id} not found"
+        )
+    
+    case_in = schemas.CaseUpdate(case_id=case_id, status=CASE_STATUS[1])
+    
+    result = crud.case.update(db=db, db_obj=case_db, obj_in=case_in) 
+    
     """
     Create a new result in the database.
     """

@@ -25,7 +25,7 @@ def get_case_status(
     *,
     user: User = Depends(deps.get_current_user),
     case_id: int,
-    db: Session = Depends(deps.get_db),
+    db: Session = Depends(deps.get_db)
 ) -> schemas.Case:
 
     result = crud.case.get(db=db, id=case_id)
@@ -62,7 +62,7 @@ def remove_case(
     *,
     user: User = Depends(deps.get_current_user),
     case_id: int,
-    db: Session = Depends(deps.get_db),
+    db: Session = Depends(deps.get_db)
 ) -> schemas.Case:
 
     result = crud.case.remove(db=db, id=case_id)
@@ -74,11 +74,11 @@ def remove_case(
         )
     return result
 
-@router.get("/")
+@router.post("/all", response_model=schemas.CaseStatusResults)
 def get_status_all(
     user: User = Depends(deps.get_current_user),
-    db: Session = Depends(deps.get_db),
-) -> schemas.CaseStatusResults:
+    db: Session = Depends(deps.get_db)
+):
     """
     Search for recipes based on label keyword
     """
@@ -92,11 +92,12 @@ def get_status_all(
 
     return {"result": cases}
 
-@router.post("/", response_model=schemas.Case, status_code=201)
+@router.post("/lcr", response_model=schemas.Case, status_code=201)
 def create_case(
     *,
     user: User = Depends(deps.get_current_user),
-    case_in: schemas.CaseRequest, db: Session = Depends(deps.get_db)
+    case_in: schemas.CaseRequest, 
+    db: Session = Depends(deps.get_db)
 ) -> Any:
     """
     Create a new case in the database.
@@ -122,7 +123,8 @@ def create_case(
 def create_case_app_2(
     *,
     user: User = Depends(deps.get_current_user),
-    case_in: schemas.CaseRequest_2, db: Session = Depends(deps.get_db)
+    case_in: schemas.CaseRequest_2, 
+    db: Session = Depends(deps.get_db)
 ) -> Any:
     """
     Create a new case in the database.
@@ -195,7 +197,6 @@ def fetch_case_app_2(
 
     # Return
     return {'params': param,'load_data': load_data}
-
 
 def send_celery():
     # trigger task from core

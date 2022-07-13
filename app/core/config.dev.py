@@ -2,6 +2,7 @@ from pydantic import AnyHttpUrl, BaseSettings, EmailStr, validator
 from typing import List, Optional, Union
 
 class Settings(BaseSettings):
+    API_STR: str = "/api"
     API_V1_STR: str = "/api/v1"
     JWT_SECRET: str = "TEST_SECRET_DO_NOT_USE_IN_PROD"
     ALGORITHM: str = "HS256"
@@ -25,7 +26,7 @@ class Settings(BaseSettings):
 
     # Database variables
     # DEV
-    SQLALCHEMY_DATABASE_URI: Optional[str] = "sqlite:///example.db"
+    SQLALCHEMY_DATABASE_URI: Optional[str] = "sqlite:///example.db?check_same_thread=False"
     
     FIRST_SUPERUSER: EmailStr = "admin@tesapi.com"
     FIRST_SUPERUSER_PW: str = "tes@dmin123"
