@@ -1,21 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import Any, List, Optional
-
-from celery import Celery
-import os
+from typing import Any
 
 from app import crud
 from app.api import deps
 from app import schemas
+from app.clients.worker_v1 import send_celery
 from app.models.user import User
 from app.schemas.case import LOAD_DATA
 
 router = APIRouter()
-
-celery_app = Celery()
-celery_app.conf.broker_url = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
-celery_app.conf.result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
 
 """
 Fetch a case status by ID
@@ -92,6 +86,9 @@ def get_status_all(
 
     return {"result": cases}
 
+"""
+Create a new case (LNG Cold Recovery)
+"""
 @router.post("/lcr", response_model=schemas.Case, status_code=201)
 def create_case(
     *,
@@ -119,6 +116,9 @@ def create_case(
 
     return case
 
+"""
+Create a new case (Peak Load Shifting)
+"""
 @router.post("/pls", response_model=schemas.Case, status_code=201)
 def create_case_app_2(
     *,
@@ -160,6 +160,22 @@ def create_case_app_2(
 
     return case
 
+"""
+Send to celery (Peak Load Shifting, Demo only)
+"""
+@router.post("/pls/celery", response_model=schemas.CaseCelery, status_code=201)
+def send_case_app_2(
+    *,
+    user: User = Depends(deps.get_current_user),
+    case_id: int, 
+    db: Session = Depends(deps.get_db)
+) -> Any:
+
+    # SEND TASK
+    id = send_celery(case_id)
+
+    return {"celery_id": id}
+
 @router.get("/pls/{case_id}", response_model=schemas.CaseGet_2)
 def fetch_case_app_2(
     *,
@@ -197,9 +213,3 @@ def fetch_case_app_2(
 
     # Return
     return {'params': param,'load_data': load_data}
-
-def send_celery():
-    # trigger task from core
-    res = celery_app.send_task("opt_snt")
-    id = res.task_id
-    print(f"task id = {id}")

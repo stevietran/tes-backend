@@ -26,7 +26,7 @@ class Settings(BaseSettings):
 
     # Database variables
     # DEV
-    SQLALCHEMY_DATABASE_URI: Optional[str] = "sqlite:///sqlite.db?check_same_thread=False"
+    SQLALCHEMY_DATABASE_URI: Optional[str] = "sqlite:///sqlite/sqlite.db?check_same_thread=False"
     
     FIRST_SUPERUSER: EmailStr = "admin@tesapi.com"
     FIRST_SUPERUSER_PW: str = "tes@dmin123"

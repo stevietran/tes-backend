@@ -36,6 +36,9 @@ class CaseInDBBase(BaseModel):
 class Case(CaseInDBBase):
     ...
 
+class CaseCelery(BaseModel):
+    celery_id : str
+
 class CaseStatusResults(BaseModel):
     result: List[Case]
 
