@@ -3,8 +3,8 @@
         {
             "previewLimit": 50,
             "driver": "SQLite",
-            "database": "\\\\wsl$\\Ubuntu\\home\\vutran\\code\\docker\\tes-app\\tes-backend\\example.db",
-            "name": "example"
+            "database": "\\\\wsl$\\Ubuntu\\home\\vutran\\code\\docker\\tes-app\\tes-backend\\sqlite\\sqlite.db",
+            "name": "sqlite"
         }
     ],
     "sqltools.useNodeRuntime": true
