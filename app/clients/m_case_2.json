@@ -1,0 +1,14 @@
+{
+    "params": {
+      "app": "Cooling Peak Load Shifting",
+      "accuracy_level": "Moderate",
+      "country_selection": "Singapore",
+      "safety_factor": 20.0
+    },
+    "type": "Cooling Peak Load Shifting",
+    "load_data": {
+      "load_type": "NOMIAL",
+      "load_selection": "ON_HALF_PEAK",
+      "load_value": 5000
+    }
+}

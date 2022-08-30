@@ -34,25 +34,42 @@ def fetch_result(
         db_result = schemas.ResultInDBBase_2.from_orm(result)
         final_result = schemas.ResultReturn_2.from_orm(db_result)
         # Get profiles
-        profile_1 = crud.loadsplitprofile.get_by_parent_id(db=db, parent_id = final_result.id)
+        profile_1 = crud.loadsplitprofile.get_items_tes(db=db, parent_id = final_result.id)
         load_split_profile = []
         for item in profile_1:
             load_split_profile.append(schemas.LoadSplitProfileInDb.from_orm(item))
-
         final_result.load_split_profile = load_split_profile
         
-        profile_2 = crud.electricsplitprofile.get_by_parent_id(db=db, parent_id = final_result.id)
+        profile_1 = crud.loadsplitprofile.get_items_no_tes(db=db, parent_id = final_result.id)
+        load_split_profile = []
+        for item in profile_1:
+            load_split_profile.append(schemas.LoadSplitProfileInDb.from_orm(item))
+        final_result.load_split_profile_no_tes = load_split_profile
+        
+        profile_2 = crud.electricsplitprofile.get_items_tes(db=db, parent_id = final_result.id)
         electric_split_profile = []
         for item in profile_2:
             electric_split_profile.append(schemas.ElectricSplitProfileInDb.from_orm(item))        
         final_result.electric_split_profile = electric_split_profile
-        
-        profile_3 = crud.costprofile.get_by_parent_id(db=db, parent_id = final_result.id)
+
+        profile_2 = crud.electricsplitprofile.get_items_no_tes(db=db, parent_id = final_result.id)
+        electric_split_profile = []
+        for item in profile_2:
+            electric_split_profile.append(schemas.ElectricSplitProfileInDb.from_orm(item))        
+        final_result.electric_split_profile_no_tes = electric_split_profile      
+
+        profile_3 = crud.costprofile.get_items_tes(db=db, parent_id = final_result.id)
         cost_profile = []
         for item in profile_3:
             cost_profile.append(schemas.ElectricSplitProfileInDb.from_orm(item))
-        final_result.cost_profile = cost_profile
-        
+        final_result.cost_split_profile = cost_profile
+
+        profile_3 = crud.costprofile.get_items_no_tes(db=db, parent_id = final_result.id)
+        cost_profile = []
+        for item in profile_3:
+            cost_profile.append(schemas.ElectricSplitProfileInDb.from_orm(item))
+        final_result.cost_split_profile_no_tes = cost_profile
+
         return final_result
 
 """
@@ -98,14 +115,32 @@ def create_result(
     # Create child tables
     for item in result_in.load_split_profile:
         item.parent_id = result_id
+        item.with_tes = True
         crud.loadsplitprofile.create(db=db, obj_in=item)
 
     for item in result_in.electric_split_profile:
         item.parent_id = result_id
+        item.with_tes = True
         crud.electricsplitprofile.create(db=db, obj_in=item)
 
-    for item in result_in.cost_profile:
+    for item in result_in.cost_split_profile:
         item.parent_id = result_id
+        item.with_tes = True
+        crud.costprofile.create(db=db, obj_in=item)
+
+    for item in result_in.load_split_profile_no_tes:
+        item.parent_id = result_id
+        item.with_tes = False
+        crud.loadsplitprofile.create(db=db, obj_in=item)
+
+    for item in result_in.electric_split_profile_no_tes:
+        item.parent_id = result_id
+        item.with_tes = False
+        crud.electricsplitprofile.create(db=db, obj_in=item)
+
+    for item in result_in.cost_split_profile_no_tes:
+        item.parent_id = result_id
+        item.with_tes = False
         crud.costprofile.create(db=db, obj_in=item)
 
     return schemas.MessageBase.parse_obj({'message': "Create result data successfully!!!"})

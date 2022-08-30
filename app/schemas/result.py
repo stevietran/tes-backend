@@ -48,7 +48,7 @@ class ResultBase_2(BaseModel):
     htf_attr: dict
     material: str
     material_attr: dict
-    cost: float
+    # cost: float
     run_time: float
 
 class ResultInDBBase_2(ResultBase_2):
@@ -67,11 +67,17 @@ class ResultUpdate_2(ResultBase_2):
 # Properties to return to client
 class ResultReturn_2(ResultInDBBase_2):
     load_split_profile: Optional[Sequence[LoadSplitProfileCreate]]
+    load_split_profile_no_tes: Optional[Sequence[LoadSplitProfileCreate]]
     electric_split_profile: Optional[Sequence[ElectricSplitProfileCreate]]
-    cost_profile: Optional[Sequence[CostProfileCreate]]
+    electric_split_profile_no_tes:  Optional[Sequence[ElectricSplitProfileCreate]]
+    cost_split_profile: Optional[Sequence[CostProfileCreate]]
+    cost_split_profile_no_tes:  Optional[Sequence[CostProfileCreate]]
 
 class ResultRequest_2(BaseModel):
     result_data: ResultCreate_2
     load_split_profile: Sequence[LoadSplitProfileCreate]
+    load_split_profile_no_tes: Sequence[LoadSplitProfileCreate]
     electric_split_profile: Sequence[ElectricSplitProfileCreate]
-    cost_profile: Sequence[CostProfileCreate]
+    electric_split_profile_no_tes: Sequence[ElectricSplitProfileCreate]
+    cost_split_profile: Sequence[CostProfileCreate]
+    cost_split_profile_no_tes: Sequence[CostProfileCreate]

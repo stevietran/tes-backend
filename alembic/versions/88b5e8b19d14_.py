@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: a9b7590c24ca
+Revision ID: 88b5e8b19d14
 Revises: 
-Create Date: 2022-07-05 23:10:50.279045
+Create Date: 2022-08-30 15:38:16.412915
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a9b7590c24ca'
+revision = '88b5e8b19d14'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -95,7 +95,6 @@ def upgrade():
     sa.Column('htf_attr', sa.PickleType(), nullable=True),
     sa.Column('material', sa.String(length=256), nullable=False),
     sa.Column('material_attr', sa.PickleType(), nullable=True),
-    sa.Column('cost', sa.Float(), nullable=False),
     sa.Column('run_time', sa.Float(), nullable=False),
     sa.ForeignKeyConstraint(['case_id'], ['case.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -105,7 +104,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('parent_id', sa.Integer(), nullable=True),
     sa.Column('time', sa.Float(), nullable=False),
-    sa.Column('value', sa.Float(), nullable=False),
+    sa.Column('value', sa.PickleType(), nullable=False),
+    sa.Column('with_tes', sa.BOOLEAN(), nullable=False),
     sa.ForeignKeyConstraint(['parent_id'], ['result_2.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -114,17 +114,18 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('parent_id', sa.Integer(), nullable=True),
     sa.Column('time', sa.Float(), nullable=False),
-    sa.Column('value', sa.Float(), nullable=False),
+    sa.Column('value', sa.PickleType(), nullable=False),
+    sa.Column('with_tes', sa.BOOLEAN(), nullable=False),
     sa.ForeignKeyConstraint(['parent_id'], ['result_2.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_electricsplitprofile_id'), 'electricsplitprofile', ['id'], unique=False)
     op.create_table('flowprofile',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('params_id', sa.Integer(), nullable=True),
+    sa.Column('parent_id', sa.Integer(), nullable=True),
     sa.Column('time', sa.Float(), nullable=False),
     sa.Column('value', sa.Float(), nullable=False),
-    sa.ForeignKeyConstraint(['params_id'], ['caseparams.id'], ),
+    sa.ForeignKeyConstraint(['parent_id'], ['caseparams.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_flowprofile_id'), 'flowprofile', ['id'], unique=False)
@@ -141,7 +142,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('parent_id', sa.Integer(), nullable=True),
     sa.Column('time', sa.Float(), nullable=False),
-    sa.Column('value', sa.Float(), nullable=False),
+    sa.Column('value', sa.PickleType(), nullable=False),
+    sa.Column('with_tes', sa.BOOLEAN(), nullable=False),
     sa.ForeignKeyConstraint(['parent_id'], ['result_2.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

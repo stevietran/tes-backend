@@ -1,12 +1,13 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Sequence
 
 class CostProfileBase(BaseModel):
-    parent_id: Optional[int]
+    time: float
+    value: Sequence[float]
 
 class CostProfileCreate(CostProfileBase):
-    time: float
-    value: float
+    parent_id: Optional[int]
+    with_tes:  Optional[bool]
 
 class CostProfileUpdate(CostProfileBase):
     ...
