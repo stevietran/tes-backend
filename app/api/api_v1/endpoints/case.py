@@ -108,12 +108,6 @@ def create_case(
         item.params_id = param.id
         crud.flowprofile.create(db=db, obj_in=item)
 
-    # trigger task from core
-    
-    res = celery_app.send_task("opt_snt")
-    id = res.task_id
-    print(f"task id = {id}")
-
     return case
 
 """
@@ -172,7 +166,8 @@ def send_case_app_2(
 ) -> Any:
 
     # SEND TASK
-    id = send_celery(case_id)
+    q_name = "opt_pls"
+    id = send_celery(case_id, q_name)
 
     return {"celery_id": id}
 

@@ -9,11 +9,10 @@ app = Celery(__name__)
 app.conf.broker_url = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
 app.conf.result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
 
-def send_celery(case_id):
-    print(f"The case id: {case_id}")
-    sleep(6)
-    kwargs = {'job_data': M_JOB}
+def send_celery(case_id, q_name):
+    kwargs = {'case_id': case_id}
     
-    res = app.send_task(name="opt_snt", kwargs=kwargs)
+    res = app.send_task(name=q_name, kwargs=kwargs)
     id = res.task_id
+    
     return id
